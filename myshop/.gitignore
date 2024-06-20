@@ -1,0 +1,6 @@
+# .gitignore
+venv/
+.env
+schema.yml
+db.sqlite3
+**__pycache__/
