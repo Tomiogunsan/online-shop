@@ -13,9 +13,9 @@ class OrderViewSet(viewsets.ModelViewSet):
     
     @action(detail=False, methods=['post'])
     def create_orders(self, request):
-        # user = request.user
-        # cart_items = Cart.objects.filter(user=request.user)
-        cart_items = Cart.objects.all()
+        user = request.user
+        cart_items = Cart.objects.filter(user=user)
+        # cart_items = Cart.objects.all()
         
         if not cart_items.exists():
             return Response({"error": "Cart is empty"}, status=status.HTTP_400_BAD_REQUEST)
@@ -23,6 +23,7 @@ class OrderViewSet(viewsets.ModelViewSet):
         total_cost = sum(items.product.price * items.quantity for items in cart_items)
         
         order_data = {
+            'user': user.id,
             'first_name': request.data.get('first_name'),
             'last_name': request.data.get('last_name'),
             'email': request.data.get('email'),
